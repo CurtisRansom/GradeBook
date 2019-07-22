@@ -3,12 +3,13 @@ using System.Collections.Generic;
 
 namespace GradeBook
 {
-    class Book
+    public class Book
     {
 
         private List<double> _grades;
         private string _name;
-
+        
+        // Constructor
         public Book(string name)
         {
             _grades = new List<double>();
@@ -20,27 +21,25 @@ namespace GradeBook
             _grades.Add(grade);
         }
 
-        public void ShowStatistics()
+        public Statistics GetStatistics()
         {
-            double result = 0.0;
-            double highGrade = double.MinValue;
-            double lowGrade = double.MaxValue;
+            var result = new Statistics();
+            result.Average = 0.0;
+            result.High = double.MinValue;
+            result.Low = double.MaxValue;
 
             // Loop through all the grades to find the lowest, highest and sum
-            foreach(var number in _grades)
+            foreach(var grade in _grades)
             {
-                lowGrade = Math.Min(number, lowGrade);
-                highGrade = Math.Max(number, highGrade);
-                result += number;
+                result.Low = Math.Min(grade, result.Low);
+                result.High = Math.Max(grade, result.High);
+                result.Average += grade;
             }
 
             // Compute the average
-            result /= _grades.Count;
+            result.Average /= _grades.Count;
 
-            // Output the results
-            Console.WriteLine($"The lowest grade is {lowGrade}.");
-            Console.WriteLine($"The highest grade is {highGrade}.");
-            Console.WriteLine($"The average grade is {result:N1}.");
+            return result;
         }
 
     }
