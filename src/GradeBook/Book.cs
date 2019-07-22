@@ -16,6 +16,12 @@ namespace GradeBook
             this._name = name;
         }
 
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
         public void AddGrade(double grade)
         {
             _grades.Add(grade);
