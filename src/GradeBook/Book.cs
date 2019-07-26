@@ -6,23 +6,38 @@ namespace GradeBook
     public class Book
     {
 
+        public delegate void GradedAddedDelegate(object sender, EventArgs args);
+
         private List<double> _grades;
-        private string _name;
-        
+        readonly string _school = string.Empty;
+
+        public const string CATEGORY = "Science";
+
+        public string Name
+        {
+            get;
+            set;
+            /* 
+            get { return _name; }
+            set 
+            { 
+                if(!String.IsNullOrEmpty(value))
+                {
+                    _name = value; 
+                }
+            }
+            */
+        }
+
         // Constructor
         public Book(string name)
         {
             _grades = new List<double>();
-            this._name = name;
+            this.Name = name;
+            _school = "South County";
         }
 
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
-
-        public void AddLetterGrade(char letter)
+        public void AddGrade(char letter)
         {
             switch(letter)
             {
@@ -49,12 +64,19 @@ namespace GradeBook
             if (grade >=0 && grade <= 100)
             {
                 _grades.Add(grade);
+
+                if(GradedAdded != null)
+                {
+                    GradedAdded(this, new EventArgs());
+                }
             }
             else
             {
                 throw new ArgumentException($"Invalid {nameof(grade)}");
             }
         }
+
+        public event GradedAddedDelegate GradedAdded;
 
         public Statistics GetStatistics()
         {
